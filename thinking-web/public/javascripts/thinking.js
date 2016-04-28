@@ -1,14 +1,44 @@
-stagedTags = [];
+var ThoughtBubble = React.createClass({
+    render: function() {
+        return (
+            <div class="thoughtBubble">
+                {this.props.thought.text}
+            </div>
+            );
+    }
+});
+
+var ThoughtList = React.createClass({
+    render: function() {
+        var nodes = this.props.thoughts.map(function(thought) {
+            return (
+                <ThoughtBubble key={thought._id} thought={thought} />
+            )
+        });
+        return (
+            <div class="thoughtList">
+                {nodes}
+            </div>
+            );
+    }
+});
+
+function renderThoughtList(thoughts) {
+    ReactDOM.render(
+        <ThoughtList thoughts={thoughts} />,
+        document.getElementById('results')
+    );
+}
+
+
+var stagedTags = [];
 
 $(function(){
     $('#thoughtInput').focus();
     
     $('#thoughtBox').submit(function(event) {
         event.preventDefault();
-        
-//        addThought($('#thoughtInput').val(), function() {
-//            $('#thoughtInput').val('');
-//        });
+
         stageThought();
     });
     
@@ -37,9 +67,10 @@ function stageThought() {
     $('#thoughtInput').prop('disabled', true);
     
     var text = $('#thoughtInput').val();
-    //FIXME: some unnecessary operations here
     var tags = generateTags(text);
-    pullFromTags(tags);
+    pullFromTags(tags, function(results) {
+        renderThoughtList(results);
+    });
     tags.forEach(function(tag) {
         stageTag(tag);
     });
@@ -105,13 +136,9 @@ function deleteTag(event) {
     stagedTags.splice(index, 1);
 }
 
-function pullFromTags(tags) {
+function pullFromTags(tags, callback) {
     $.get('/api/thoughts/search?tags=' + encodeURI(JSON.stringify(tags)),
     function(data) {
-        var html = '';
-        data.forEach(function(thought) {
-            html += '<li class="thought">' + thought.text + '</span>';
-        });
-        $('#thoughtList').html(html);
+        callback(data);
     });
 }
