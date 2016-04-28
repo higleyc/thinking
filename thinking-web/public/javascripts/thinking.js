@@ -17,6 +17,8 @@ $(function(){
         
         tagAction();
     });
+    
+    $('#stagedTags').on('click', '.tag', deleteTag);
 });
 
 function addThought(text, tags, callback) {
@@ -93,4 +95,11 @@ function generateTags(text) {
     }
     
     return tags;
+}
+
+function deleteTag(event) {
+    var tag = $(this);
+    var index = stagedTags.indexOf(tag.text());
+    tag.remove();
+    stagedTags.splice(index, 1);
 }

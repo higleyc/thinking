@@ -21,3 +21,8 @@ a {
 .tag {
     padding-right: 15px;
 }
+
+.tag:hover {
+    cursor: pointer;
+    text-decoration: line-through;
+}
