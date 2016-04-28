@@ -88,9 +88,9 @@ function generateTags(text) {
     for (var i = 0; i < terms.length; i++) {
         if (terms[i].pos.Noun && (!terms[i].pos.Pronoun)) {
             if (terms[i].pos.Plural) {
-                tags.push(terms[i].singularize());
+                tags.push(terms[i].singularize().toLowerCase());
             } else {
-                tags.push(terms[i].text);
+                tags.push(terms[i].text.toLowerCase());
             }
         }
     }
