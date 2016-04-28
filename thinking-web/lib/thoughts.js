@@ -22,5 +22,13 @@ module.exports = {
         thoughts.find(filters, function(err, result) {
             callback(err, result);
         })
+    },
+    
+    searchByTags: function(tags, callback) {
+        var thoughts = db.get('thoughts');
+        
+        thoughts.find({'tags[]': {$in: tags}}, function(err, result) {
+            callback(err, result);
+        });
     }
 }

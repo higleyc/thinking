@@ -26,4 +26,18 @@ router.route('/thoughts')
     });
 });
 
+
+router.route('/thoughts/search')
+
+.get(function(req, res) {
+    var tags = JSON.parse(req.query.tags);
+    thoughts.searchByTags(tags, function(err, result) {
+        if (err) {
+            res.send('Error searching.');
+        } else {
+            res.json(result);
+        }
+    });
+});
+
 module.exports = router;
