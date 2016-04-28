@@ -39,9 +39,10 @@ function stageThought() {
     var text = $('#thoughtInput').val();
     //FIXME: some unnecessary operations here
     var tags = generateTags(text);
+    pullFromTags(tags);
     tags.forEach(function(tag) {
         stageTag(tag);
-    })
+    });
     
     $('#stagedText').text(text);
     $('#stage').css('visibility', 'visible');
@@ -102,4 +103,15 @@ function deleteTag(event) {
     var index = stagedTags.indexOf(tag.text());
     tag.remove();
     stagedTags.splice(index, 1);
+}
+
+function pullFromTags(tags) {
+    $.get('/api/thoughts/search?tags=' + encodeURI(JSON.stringify(tags)),
+    function(data) {
+        var html = '';
+        data.forEach(function(thought) {
+            html += '<li class="thought">' + thought.text + '</span>';
+        });
+        $('#thoughtList').html(html);
+    });
 }
