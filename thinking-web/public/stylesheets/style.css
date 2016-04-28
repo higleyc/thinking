@@ -10,3 +10,14 @@ a {
 #thoughtInput {
     width: 500px;
 }
+
+#stage {
+    width: 500px;
+    margin-top: 20px;
+    background-color: #f2f2f2;
+    visibility: hidden;
+}
+
+.tag {
+    padding-right: 15px;
+}
