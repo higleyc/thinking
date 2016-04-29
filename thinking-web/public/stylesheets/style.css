@@ -62,3 +62,7 @@ a {
     cursor: pointer;
     opacity: 1.0;
 }
+
+#stagedText {
+    cursor: pointer;
+}

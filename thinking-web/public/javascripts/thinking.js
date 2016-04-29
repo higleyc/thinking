@@ -78,6 +78,11 @@ $(function(){
     $('#stagedTags').on('click', '.tag', deleteTag);
     
     $('#closeStage').click(closeStage);
+    
+    $('#stagedText').click(function() {
+        addThought($('#stagedText').text(), stagedTags, stagedLinks, thoughtAdded);
+        closeStage();
+    });
 });
 
 function addThought(text, tags, links, callback) {
@@ -170,6 +175,7 @@ function closeStage() {
     $('#stage').css('opacity', 0);
     renderThoughtList([]);
     $('#thoughtInput').prop('disabled', false);
+    $('#thoughtInput').focus();
     stagedTags = [];
     $('#stagedTags').html('');
     $('#tagInput').val('');
