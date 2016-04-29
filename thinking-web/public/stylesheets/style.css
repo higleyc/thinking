@@ -15,7 +15,8 @@ a {
     margin-top: 20px;
     margin-bottom: 40px;
     
-    visibility: hidden;
+    opacity: 0;
+    transition:opacity 400ms;
 }
 
 .tag {

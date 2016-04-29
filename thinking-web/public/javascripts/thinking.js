@@ -51,6 +51,8 @@ $(function(){
     });
     
     $('#stagedTags').on('click', '.tag', deleteTag);
+    
+    $('#closeStage').click(closeStage);
 });
 
 function addThought(text, tags, callback) {
@@ -78,7 +80,7 @@ function stageThought() {
     });
     
     $('#stagedText').text(text);
-    $('#stage').css('visibility', 'visible');
+    $('#stage').css('opacity', 1.0);
     $('#tagInput').focus();
 }
 
@@ -143,4 +145,13 @@ function pullFromTags(tags, callback) {
     function(data) {
         callback(data);
     });
+}
+
+function closeStage() {
+    $('#stage').css('opacity', 0);
+    renderThoughtList([]);
+    $('#thoughtInput').prop('disabled', false);
+    stagedTags = [];
+    $('#stagedTags').html('');
+    $('#tagInput').val('');
 }
