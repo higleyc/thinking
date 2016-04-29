@@ -1,8 +1,10 @@
 var ThoughtBubble = React.createClass({
     render: function() {
         return (
-            <div class="thoughtBubble">
-                {this.props.thought.text}
+            <div className="thoughtBubble">
+                <div className="bubbleText">
+                    {this.props.thought.text}
+                </div>
             </div>
             );
     }
@@ -95,7 +97,7 @@ function tagAction() {
 function stageTag(tagText) {
     stagedTags.push(tagText);
     
-    $('#stagedTags').append('<span class="tag">' + tagText + '</span>');
+    $('#stagedTags').append('<span class="tag label">' + tagText + '</span>');
 }
 
 function unstage() {
