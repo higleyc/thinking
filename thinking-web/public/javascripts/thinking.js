@@ -1,7 +1,31 @@
 var ThoughtBubble = React.createClass({
+    getInitialState: function() {
+        return {
+            linked: false
+        };
+    },
+    handleLink: function(event) {
+        var element = $(event.target);
+        if (this.state.linked) {
+            element.css('color', '#000000');
+            element.css('font-weight', 'normal');
+            var index = stagedLinks.indexOf(this.props.thought._id);
+            stagedLinks.splice(index, 1);
+        } else {
+            element.css('color', '#337ab7');
+            element.css('font-weight', 'bold');
+            stagedLinks.push(this.props.thought._id);
+        }
+        
+        this.state.linked = !this.state.linked;
+        console.log(stagedLinks);
+    },
     render: function() {
         return (
             <div className="thoughtBubble">
+                <div className="thoughtLink" onClick={this.handleLink}>
+                    <i className="fa fa-link" aria-hidden="true"></i>
+                </div>
                 <div className="bubbleText">
                     {this.props.thought.text}
                 </div>
@@ -34,6 +58,7 @@ function renderThoughtList(thoughts) {
 
 
 var stagedTags = [];
+var stagedLinks = [];
 
 $(function(){
     $('#thoughtInput').focus();
@@ -55,12 +80,13 @@ $(function(){
     $('#closeStage').click(closeStage);
 });
 
-function addThought(text, tags, callback) {
+function addThought(text, tags, links, callback) {
     $.post(
         '/api/thoughts',
         {
             text: text,
-            tags: tags
+            tags: tags,
+            links: links
         }
     ).always(function() { 
         callback();
@@ -88,8 +114,8 @@ function tagAction() {
     var tagText = $('#tagInput').val();
     
     if (tagText == '') {
-        addThought($('#stagedText').text(), stagedTags, thoughtAdded);
-        unstage();
+        addThought($('#stagedText').text(), stagedTags, stagedLinks, thoughtAdded);
+        closeStage();
     } else {
         $('#tagInput').val('');
         stageTag(tagText);
@@ -100,13 +126,6 @@ function stageTag(tagText) {
     stagedTags.push(tagText);
     
     $('#stagedTags').append('<span class="tag label">' + tagText + '</span>');
-}
-
-function unstage() {
-    $('#stage').css('visibility', 'hidden');
-    stagedTags = [];
-    $('#stagedText').text('');
-    $('#stagedTags').text('');
 }
 
 function thoughtAdded() {
