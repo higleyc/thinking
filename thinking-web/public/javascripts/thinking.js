@@ -158,7 +158,7 @@ function generateTags(text) {
     var terms = nlp_compromise.text(text).terms();
     var tags = [];
     for (var i = 0; i < terms.length; i++) {
-        if (terms[i].pos.Noun && (!terms[i].pos.Pronoun)) {
+        if (terms[i].pos.Noun && (!terms[i].pos.Pronoun) && terms[i].normal.length > 0) {
             if (terms[i].pos.Plural) {
                 tags.push(terms[i].singularize());
             } else {
