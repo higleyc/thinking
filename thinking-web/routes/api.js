@@ -40,4 +40,19 @@ router.route('/thoughts/search')
     });
 });
 
+router.route('/thoughts/addAdjacency')
+
+.post(function(req, res) {
+    console.log(req.body);
+    var firstId = req.body.firstId;
+    var secondId = req.body.secondId;
+    thoughts.addAdjacency(firstId, secondId, function(err) {
+        if (err) {
+            res.send('Error adding adjacency.');
+        } else {
+            res.json({});
+        }
+    });
+});
+
 module.exports = router;

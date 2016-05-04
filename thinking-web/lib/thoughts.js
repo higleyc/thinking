@@ -30,5 +30,36 @@ module.exports = {
         thoughts.find({'tags[]': {$in: tags}}, function(err, result) {
             callback(err, result);
         });
+    },
+    
+    addAdjacency: function(firstId, secondId, callback) {
+        var thoughts = db.get('thoughts');
+        
+        thoughts.findOne({_id: firstId}, function(err, first) {
+            if (err) {
+                callback(err);
+                return;
+            }
+            thoughts.findOne({_id: secondId}, function(err, second) {
+                if (err) {
+                    callback(err);
+                    return;
+                }
+                first.next = secondId;
+                second.previous = firstId;
+                thoughts.update({_id: firstId}, first, function(err) {
+                    if (err) {
+                        callback(err);
+                    }
+                });
+                thoughts.update({_id: secondId}, second, function(err) {
+                    if (err) {
+                        callback(err);
+                    } else {
+                        callback(null);
+                    }
+                });
+            });
+        });
     }
 }
