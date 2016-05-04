@@ -18,7 +18,6 @@ var ThoughtBubble = React.createClass({
         }
         
         this.state.linked = !this.state.linked;
-        console.log(stagedLinks);
     },
     render: function() {
         return (
@@ -59,6 +58,7 @@ function renderThoughtList(thoughts) {
 
 var stagedTags = [];
 var stagedLinks = [];
+var previousThought = null;
 
 $(function(){
     $('#thoughtInput').focus();
@@ -93,7 +93,20 @@ function addThought(text, tags, links, callback) {
             tags: tags,
             links: links
         }
-    ).always(function() { 
+    )
+    .done(function(thought) {
+        if (previousThought) {
+            $.post(
+                '/api/thoughts/addAdjacency',
+                {
+                    firstId: previousThought,
+                    secondId: thought._id
+                }
+            );
+        }
+        previousThought = thought._id;
+    })
+    .always(function() { 
         callback();
     });
 }
