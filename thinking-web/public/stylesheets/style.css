@@ -66,3 +66,7 @@ a {
 #stagedText {
     cursor: pointer;
 }
+
+#alert {
+    opacity: 0;
+}

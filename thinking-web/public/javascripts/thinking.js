@@ -66,7 +66,16 @@ $(function(){
     $('#thoughtBox').submit(function(event) {
         event.preventDefault();
 
-        stageThought();
+        var text = $('#thoughtInput').val();
+        if (text.length ==0) {
+            return;
+        }
+        
+        if (text[0] == '/') {
+            processCommand(text);
+        } else {
+            stageThought(text);
+        }
     });
     
     $('#tagForm').submit(function(event) {
@@ -83,6 +92,10 @@ $(function(){
         addThought($('#stagedText').text(), stagedTags, stagedLinks, thoughtAdded);
         closeStage();
     });
+    
+    $('#alertClose').click(function() {
+        $('#alert').css('opacity', 0);
+    })
 });
 
 function addThought(text, tags, links, callback) {
@@ -111,10 +124,9 @@ function addThought(text, tags, links, callback) {
     });
 }
 
-function stageThought() {
+function stageThought(text) {
     $('#thoughtInput').prop('disabled', true);
     
-    var text = $('#thoughtInput').val();
     var tags = generateTags(text);
     pullFromTags(tags, function(results) {
         renderThoughtList(results);
@@ -192,4 +204,28 @@ function closeStage() {
     stagedTags = [];
     $('#stagedTags').html('');
     $('#tagInput').val('');
+}
+
+function processCommand(text) {
+    var parts = text.split(' ');
+    if (parts[0] == '/a' || parts[0] == '/all') {
+        showAllThoughts();
+    } else if (parts[0] == '/id' && parts.length > 1) {
+        showThought(parts[1]);
+    } else {
+        showAlert('Invalid command.');
+    }
+}
+
+function showAlert(text) {
+    $('#alertText').html(text);
+    $('#alert').css('opacity', 1);
+}
+
+function showAllThoughts() {
+    console.log('all');
+}
+
+function showThought(id) {
+    console.log('one thought');
 }
