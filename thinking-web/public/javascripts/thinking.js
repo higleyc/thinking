@@ -223,7 +223,9 @@ function showAlert(text) {
 }
 
 function showAllThoughts() {
-    console.log('all');
+    $.get('/api/thoughts', function(data) {
+        renderThoughtList(data);
+    });
 }
 
 function showThought(id) {
