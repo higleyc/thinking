@@ -5,7 +5,7 @@ module.exports = {
     create: function(thought, callback) {
         var thoughts = db.get('thoughts');
         
-        //TODO: preprocessing
+        preInsert(thought);
         
         thoughts.insert(thought, function(err) {
             callback(err);
@@ -62,4 +62,8 @@ module.exports = {
             });
         });
     }
+};
+
+function preInsert(thought) {
+    thought.createdAt = new Date();
 }
